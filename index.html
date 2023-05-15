@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voice Command Game</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        background-color: #4CAF50;
+        color: white;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+      }
+      #box {
+        background-color: red;
+        height: 100px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Voice Command Game</h1>
+    <p>Use your voice to move the box around the screen.</p>
+    <div id="box"></div>
+
+    <script>
+      // Set up speech recognition
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+
+      // Get reference to the box element
+      const box = document.getElementById("box");
+
+      // Set initial position of the box
+      let x = window.innerWidth / 2 - box.offsetWidth / 2;
+      let y = window.innerHeight / 2 - box.offsetHeight / 2;
+
+      // Handle voice commands
+      recognition.onresult = function(event) {
+        const transcript = event.results[event.resultIndex][0].transcript.trim().toLowerCase();
+
+        if (transcript === "up") {
+          y -= 10;
+        } else if (transcript === "down") {
+          y += 10;
+        } else if (transcript === "left") {
+          x -= 10;
+        } else if (transcript === "right") {
+          x += 10;
+        }
+
+        // Update box position
+        box.style.top = y + "px";
+        box.style.left = x + "px";
+      };
+
+      // Start speech recognition
+      recognition.start();
+    </script>
+  </body>
+</html>
 
